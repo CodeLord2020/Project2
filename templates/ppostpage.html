@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Macsauce Expose</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static 'assets/css/postpage.css' %}" />
+		<link href="https://cdn.tiny.cloud/1/fgao19ffkowvd6o32sah92ss5obaoxg7rnzmszopiikfb7gc/tinymce/5/skins/content/default/content.min.css" rel="stylesheet" />
+		<noscript><link rel="stylesheet" href="{% static 'assets/css/noscript.css' %}" /></noscript>
+	
+		<script>
+			tinymce.init({
+			  selector: '#blog-body',
+			  plugins: 'autoresize',
+			  force_p_newlines: true,
+			  forced_root_block: false,
+			  toolbar: 'undo redo | bold italic underline | bullist numlist | link image',
+			  autoresize_min_height: 200
+			});
+		 </script>	
+	</head>
+	
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+
+				<!-- Intro -->
+					<div id="intro">
+						<h1>Hi,<br />
+						Welcome</h1>
+						<p>This is Macsauce Expose, A free and interesting blog site <a href="https://twitter.com/babs_rasheed">@babs_rasheed</a><br /></p>
+						<ul class="actions">
+							<li><a href="{%url 'index' %}" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+						</ul>
+					</div>
+
+				<!-- Header -->
+					<header id="header">
+						{% if user.is_authenticated %} 
+						<a href="index.html" class="logo">Welcome {{user.username}}</a>
+						{% else %}
+						<a href="index.html" class="logo">Welcome</a>
+						{% endif %}
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="create_post">Create_Post</a></li>
+							<li><a href="/category/Programming">Programming</a></li>
+							<li><a href="/category/Entertainment">Entertainment</a></li>
+							<li><a href="/category/Technology">Technology</a></li>
+							<li><a href="/category/Sport">Sport</a></li>
+							<li><a href="/category/Politics">Politics</a></li>
+							<li><a href="/category/Others">  Others</a></li>
+							{%  if user.is_authenticated %}
+							<li style="color: rgb(255, 255, 255);" class="active"><a href="logout">Logout</a></li>
+							{% else %}
+							<li style="color: rgb(248, 149, 149);" class="active"><a href="login">Login or Sign up</a></li>
+							{% endif %}
+						</ul>
+						<!-- <ul class="icons">
+							<li><a href="https://twitter.com/babs_rasheed" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="https://www.linkedin.com/in/rasheed-babatunde-50133921a/" class="icon brands fa-linkedin"><span class="label">Instagram</span></a></li>
+							<li><a href="https://github.com/CodeLord2020" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul> -->
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Featured Post -->
+						   <article class="post featured">
+								<header class="major">
+									<span class="dateauthor">Posted on {{posts.time_created}} by {{posts.Author}}</span>
+									<h2>{{posts.title}}</h2>
+                            
+								<p class="post-body">{{posts.body|safe}}</p>
+								</header>	
+								
+
+							</article>
+						<!-- Posts -->
+					
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section>
+							<p>Reference:<br>
+                {{posts.references}}</p>
+						</section>
+					</footer>
+
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+			<script src="{% static 'assets/js/jquery.scrollex.min.js' %}"></script>
+			<script src="{% static 'assets/js/jquery.scrolly.min.js' %}"></script>
+			<script src="{% static 'assets/js/browser.min.js' %}"></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
+			<script src="{% static 'assets/js/main.js' %}"></script>
+
+	</body>
+</html>

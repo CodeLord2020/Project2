@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>The Web News</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+<!--[if lte IE 6]><link rel="stylesheet" type="text/css" href="{% static 'ie.css' %}" /><![endif]-->
+</head>
+<body>
+<!-- BEGIN wrapper -->
+<div id="wrapper">
+  <!-- BEGIN header -->
+  <div id="header">
+    <ul>
+      <li class="f"><a href="{%url 'index' %}">Home</a></li>
+      <li><a href="{%url 'about' %}">About Us</a></li>
+      <li><a href="{%url 'contact' %}">Contact Page</a></li>
+    </ul>
+    <div class="break"></div>
+    <div class="logo">
+      {% if user.is_authenticated %} 
+      <h1>Welcome {{user.username}}</a></h1>
+      {% else %}
+      <h1>Welcome</a></h1>
+      {% endif %}
+      
+    </div>
+    
+    <div class="break"></div>
+    <ol>
+      <li><a href="create_post">Create Post</a></li>
+      <li><a href="/category/Programming">Programming</a></li>
+      <li><a href="/category/Entertainment">Entertainment</a></li>
+      <li><a href="/category/Technology">Technology</a></li>
+      <li><a href="/category/Sport">Sport</a></li>
+      <li><a href="/category/Politics">Politics</a></li>
+      <li><a href="/category/Others">  Others</a></li>
+      {%  if user.is_authenticated %}
+      <li style="color: rgb(255, 255, 255);" class="active"><a href="logout">Logout</a></li>
+	  {% else %}
+	  <li style="color: rgb(248, 149, 149);" class="active"><a href="login">Login or Sign up</a></li>
+	  {% endif %}
+    </ol>
+    <div class="break"></div>
+  </div>
+  <!-- END header -->
+  <!-- BEGIN content -->
+  <div id="content">
+    <!-- begin post -->
+    {% for post in posts reversed %}
+
+    <div class="post">
+      <div class="thumb"><img src="{% static 'images/_thumb1.jpg' %}" alt="" /></div>
+      <h2><a href="/postpage/{{post.id}}">{{post.title}}</a></h2>
+      <p class="categories">Category: <a href="/category/{{post.category}}"> {{post.category}}</a></p>
+      <p class="dateauthor">Posted on {{post.time_created}} by {{post.Author}}</p>
+      <p>{{post.body|truncatewords:15}}</p>
+      <a class="continue" href="/postpage/{{post.id}}">Continue Reading</a> </div>
+    <!-- end post -->
+    {% endfor %}
+    <div>
+      <ul><li><a href="#">2</a></li>
+        <li><a href="#">&raquo;</a></li>
+      </ul>
+      <div class="break"></div>
+    </div>
+    <!-- end post navigation -->
+  </div>
+  <!-- END content -->
+  <!-- BEGIN sidebar -->
+  <div id="sidebar">
+    <!-- begin ads >
+    <div class="ads"> <a href="#"><img src="{% static 'images/ad125x125.jpg' %}" alt="" /></a> <a href="#"><img src="{% static 'images/ad125x125.jpg' %}" alt="" /></a> <a href="#"><img src="{% static 'images/ad125x125.jpg' %}" alt="" /></a> <a href="#"><img src="{% static 'images/ad125x125.jpg' %}" alt="" /></a> </div>
+    <!-- end ads -->
+    <!-- begin search -->
+    <form class="search" action="{% url 'index' %}">
+      <input type="text" name="q"  placeholder="Search for posts" id="s" />
+      <button type="submit">Search</button>
+    </form>
+    <!-- end search -->
+    <div class="wrapper">
+      <!-- begin popular posts -->
+      <h2>Recent Posts</h2>
+      <ul>
+    {% for post in posts reversed %}
+
+    <div class="post">
+      <h4>{{post.title}}</h4>
+      <h6 class="date">Posted on {{post.time_created}}</h6>
+      <h5><a class="continue" href="/postpage/{{post.id}}">Continue Reading</a></h5>
+      <br>
+    </div>
+    <!-- end post -->
+    {% endfor %}
+      </ul>
+      <!-- end popular posts -->
+      <!-- begin flickr photos >
+      <h2>Flickr Photos</h2>
+      <div class="flickr"> <a href="#"><img src="{% static 'images/_thumb3.jpg' %}" alt="" /></a> <a href="#"><img src="{% static 'images/_thumb4.jpg' %}" alt="" /></a> <a href="#"><img src="{% static 'images/_thumb5.jpg' %}" alt="" /></a> <a href="#"><img src="{% static 'images/_thumb6.jpg' %}" alt="" /></a> <a href="#"><img src="{% static 'images/_thumb7.jpg' %}" alt="" /></a> <a href="#"><img src="{% static 'images/_thumb8.jpg' %}" alt="" /></a> </div>
+      <!-- end flickr photos -->
+      <!-- begin featured video >
+      <h2>Featured Video</h2>
+      <div class="video"> <img src="{% static 'images/_video.jpg' %}" alt="" /> </div>
+      <!-- end featured video -->
+      <!-- begin tags -->
+      <h2>Tags</h2>
+      <div class="tags"> </div>
+      <!-- end tags -->
+      <!-- BEGIN left -->
+      <div class="l sbar">
+        <!-- begin categories -->
+        <h2>PAGES</h2>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Archives</a></li>
+          <li><a href="#">Links</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+        <!-- end categories -->
+         <!-- begin meta -->
+        <h2>Meta</h2>
+        <ul>
+          <li><a href="login">Login</a></li>
+        </ul>
+        <!-- end meta -->
+      
+      </div>
+      <!-- END left -->
+      <!-- BEGIN right -->
+      <div class="r sbar">
+          <!-- begin pages -->
+          <h2>CATEGORIES</h2>
+          <ul>
+            <li><a href="/category/Programming">Programming</a></li>
+            <li><a href="/category/Entertainment">Entertainment</a></li>
+            <li><a href="/category/Technology">Technology</a></li>
+            <li><a href="/category/Sport">Sport</a></li>
+            <li><a href="/category/Politics">Politics</a></li>
+            <li><a href="/category/Others">  Others</a></li>
+          </ul>
+          <!-- end pages -->
+        <!-- begin archives >
+        <h2>Archives</h2>
+        <ul>
+          <li><a href="#">August 2008</a></li>
+          <li><a href="#">July 2008</a></li>
+          <li><a href="#">June 2008</a></li>
+          <li><a href="#">May 2008</a></li>
+          <li><a href="#">April 2008</a></li>
+          <li><a href="#">March 2008</a></li>
+        </ul>
+        <!-- end archives -->
+        <!-- begin blogroll >
+        <h2>Blogroll</h2>
+        <ul>
+          <li><a href="#">Carlos</a></li>
+          <li><a href="#">Digital Point Forum</a></li>
+          <li><a href="#">Eric's Photo Gallery</a></li>
+          <li><a href="#">Fashion Trends</a></li>
+          <li><a href="#">Google Scoreboard</a></li>
+          <li><a href="#">Marketing Forum</a></li>
+        </ul>
+        <!-- end blogroll -->
+       
+      </div>
+      <!-- END right -->
+    </div>
+  </div>
+  <!-- END sidebar -->
+  <!-- BEGIN footer -->
+  <div id="footer">
+    <p>Copyright &copy; 2009 - <a href="#">Website Name</a> &middot; All Rights Reserved</p>
+    <p>Template by: <a href="http://www.wpthemedesigner.com/">WordPress Designer</a> | Get More <a href="#">Free CSS Templates</a></p>
+  </div>
+  <!-- END footer -->
+</div>
+<!-- END wrapper -->
+</body>
+</html>

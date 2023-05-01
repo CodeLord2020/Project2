@@ -1,0 +1,35 @@
+<h3>Create Post</h3>
+</div>
+</div>
+<div class="layout__body">
+<form class="form" action="" method="POST">
+  {% csrf_token %}
+
+  <div class="form__group">
+    <label for="room_name">Blog_Title</label>
+    {{form.title}}
+  </div>
+
+  <div class="form__group">
+    <label for="room_description">Category</label>
+    {{form.category}}
+  </div>
+
+  
+  <div class="form__group">
+    <label for="room_description">Blog main body</label>
+    {{form.body}}
+  </div>
+
+  
+  <div class="form__group">
+    <label for="room_description">references if any</label>
+    {{form.references}}
+  </div>
+
+
+  <div class="form__action">
+    <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+    <button class="btn btn--main" type="submit">Submit</button>
+  </div>
+</form>

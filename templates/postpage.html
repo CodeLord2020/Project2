@@ -1,0 +1,164 @@
+<!-- <!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Macsauce Expose</title>
+		<meta charset="utf-8" />
+
+<span class="dateauthor">Posted on {{posts.time_created}} by {{posts.Author}}</span>
+<h2 style="text-align: center;">{{posts.title}}</h2>
+  </head>
+
+  <body><p class="post-body">{{posts.body|safe}}</p>
+  
+  <footer id="footer">
+       <section>
+          <p>Reference:<br>
+          {{posts.references}}</p>
+           </section>
+ </footer>
+
+</body>
+
+</html>
+                             -->
+
+
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Macsauce Expose</title>
+    <meta charset="utf-8" />
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background-color: #222;
+        color: #fff;
+        margin: 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px;
+      }
+
+      .dateauthor {
+        color: #d4cccc;
+        font-size: 14px;
+      }
+
+      h2 {
+        text-align: center;
+        margin-top: 20px;
+        color: #fff;
+      }
+
+      .post-body {
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 20px;
+        margin-top: 20px;
+        position: relative;
+        color: #000;
+        
+        
+      }
+
+      .post-body button {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+
+      .post-body button:hover {
+        background-color: #444;
+      }
+
+      .post-body button:active {
+        background-color: #555;
+      }
+
+      .post-body .like {
+        background-color: #4caf50;
+      }
+
+      .post-body .dislike {
+        background-color: #f44336;
+      }
+
+      .post-body .heart {
+        background-color: #f44336;
+      }
+
+      .post-body .like:hover,
+      .post-body .dislike:hover,
+      .post-body .heart:hover {
+        background-color: #555;
+      }
+
+      .post-body .like:active,
+      .post-body .dislike:active,
+      .post-body .heart:active {
+        background-color: #777;
+      }
+
+      #footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        color: #e4d7d7;
+        font-size: 14px;
+      }
+
+      #footer a {
+        color: #e9dada;
+        text-decoration: none;
+      }
+
+      #footer a:hover {
+        color: #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    
+    <div class="container">
+      <a href="{% url 'index' %}" style="position: absolute; top: 10px; left: 10px; color: #fff; padding: 10px; background-color: #333; border-radius: 5px; text-decoration: none; font-weight: bold;">Home</a>
+     
+      <h2>{{posts.title}}</h2>
+       <span class="dateauthor">Posted on {{posts.time_created}} by {{posts.Author}}</span>
+
+      {% if request.user.is_authenticated %}
+           <a href="{% url 'updatePost' posts.id %}" style="position: absolute; top: 10px; right: 10px; color: #fff; padding: 10px; background-color: #333; border-radius: 5px; text-decoration: none; font-weight: bold;">Update Post</a>
+           <!-- <a href="{% url 'updatePost' posts.id %}" style="position: absolute; top: 10px; right: 10px; color: #fff; ">Update Post</a> -->
+      {% endif %}
+
+      <div class="post-body">
+        <p style="color: black;">{{posts.body|safe}}</p><br><br><br>
+        <button class="like" onclick="like()">&#x1F44D; <span id="like-count">{{posts.like_count}}</span></button>
+        <button class="dislike" onclick="dislike()">&#x1F44E; <span id="dislike-count">{{posts.dislike_count}}</span></button>
+        <button class="heart" onclick="heart()">&#x2764; <span id="heart-count">{{posts.heart_count}}</span></button>
+      </div>
+
+      <footer id="footer">
+        <section>
+          <p>Reference:<br>
+          {{posts.references}}</p>
+        </section>
+      </footer>
+    </div>
+  </body>
+</html>
+
+

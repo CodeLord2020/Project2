@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Macsauce Expose</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+		<noscript><link rel="stylesheet" href="{% static 'assets/css/noscript.css' %}" /></noscript>
+	</head>
+	
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+
+				<!-- Intro -->
+					<div id="intro">
+						<h1>Hi,<br />
+						Welcome</h1>
+						<p>This is Macsauce Expose, A free and interesting blog site <a href="https://twitter.com/babs_rasheed">@babs_rasheed</a><br /></p>
+						<ul class="actions">
+							<li><a href="{%url 'index' %}" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+						</ul>
+					</div>
+
+				<!-- Header -->
+					<header id="header">
+						{% if user.is_authenticated %} 
+						<a href="index.html" class="logo">Welcome {{user.username}}</a>
+						{% else %}
+						<a href="index.html" class="logo">Welcome</a>
+						{% endif %}
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="create_post">Create_Post</a></li>
+							<li><a href="/category/Programming">Programming</a></li>
+							<li><a href="/category/Entertainment">Entertainment</a></li>
+							<li><a href="/category/Technology">Technology</a></li>
+							<li><a href="/category/Sport">Sport</a></li>
+							<li><a href="/category/Politics">Politics</a></li>
+							<li><a href="/category/Others">  Others</a></li>
+							{%  if user.is_authenticated %}
+							<li style="color: rgb(255, 255, 255);" class="active"><a href="logout">Logout</a></li>
+							{% else %}
+							<li style="color: rgb(248, 149, 149);" class="active"><a href="login">Login or Sign up</a></li>
+							{% endif %}
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Featured Post -->
+						{% for post in posts %}
+						   {% if forloop.last %}
+						   <article class="post featured">
+								<header class="major">
+									<span class="dateauthor">Posted on {{post.time_created}} by {{post.Author}}</span>
+									<h2><a href="/postpage/{{post.id}}">{{post.title}}</a></h2>
+									<p>{{post.body|safe|truncatewords:15}}</p>
+								</header>
+								<a href="/postpage/{{post.id}}" class="image main"><img src="{% static 'images/_thumb1.jpg' %}" alt="" /></a>
+								<ul class="actions special">
+									<li><a href="/postpage/{{post.id}}" class="button large">Full Story</a></li>
+								</ul>
+							</article>
+							{% endif %}
+						{% endfor %}
+						<!-- Posts -->
+						
+						    
+							<section class="posts">
+							{% for post in posts reversed %}
+								{% if not forloop.first %}
+								<article>
+									<header>
+										<span class="date">Posted on {{post.time_created}}</span>
+										<span class="date">Posted by {{post.Author}}</span>
+										<h2><a href="/postpage/{{post.id}}">{{post.title}}</a></h2>
+									</header>
+									<a href="/postpage/{{post.id}}" class="image fit"><img src="{% static 'images/_thumb1.jpg' %}" alt="" /></a>
+									<p>{{post.body|safe|truncatewords:15}}</p>
+									<ul class="actions special">
+										<li><a href="/postpage/{{post.id}}" class="button">Full Story</a></li>
+									</ul>
+								</article>
+							    {% endif %}
+							{% endfor %}
+							</section>
+							
+						
+
+						<!-- Footer -->
+							<footer>
+								<div class="pagination">
+									<!--<a href="#" class="previous">Prev</a>-->
+									<a href="#" class="page active">1</a>
+									<a href="#" class="page">2</a>
+									<a href="#" class="page">3</a>
+									<span class="extra">&hellip;</span>
+									<a href="#" class="page">8</a>
+									<a href="#" class="page">9</a>
+									<a href="#" class="page">10</a>
+									<a href="#" class="next">Next</a>
+								</div>
+							</footer>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field">
+										<label for="name">Name</label>
+										<input type="text" name="name" id="name" />
+									</div>
+									<div class="field">
+										<label for="email">Email</label>
+										<input type="text" name="email" id="email" />
+									</div>
+									<div class="field">
+										<label for="message">Message</label>
+										<textarea name="message" id="message" rows="3"></textarea>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message" /></li>
+								</ul>
+							</form>
+						</section>
+						 <section class="split contact">
+							     <section class="alt">
+								<h3>Address</h3>
+								<p>1234 Somewhere Road #87257<br />
+								Nashville, TN 00000-0000</p>
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">(000) 000-0000</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">info@untitled.tld</a></p>
+							</section> 
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+									<li><a href="https://twitter.com/babs_rasheed" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="https://www.linkedin.com/in/rasheed-babatunde-50133921a" class="icon brands alt  fa-linkedin"><span class="label">Instagram</span></a></li>
+									<li><a href="https://github.com/CodeLord2020" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Macsauce Blog</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+			<script src="{% static 'assets/js/jquery.scrollex.min.js' %}"></script>
+			<script src="{% static 'assets/js/jquery.scrolly.min.js' %}"></script>
+			<script src="{% static 'assets/js/browser.min.js' %}"></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
+			<script src="{% static 'assets/js/main.js' %}"></script>
+
+	</body>
+</html>

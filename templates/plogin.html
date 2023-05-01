@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<h1>Login Below</h1>
+<style>h5{color: red;}</style>
+{% for message in messages %}
+<h5>{{message}}</h5>
+{% endfor %}
+
+<form method="POST" action="login">
+    {% csrf_token %}
+    <p>Username:</p>  
+    <input type="text" name="username"/>
+
+    <p>Password:</p>
+    <input type="password" name="password"/><b>
+    <input type="submit">
+
+</form>
+<br>
+<br>
+<li><a href="register" type="button">Sign up</a></li>
+
+<!-- Coding By CodingNepal - youtube.com/codingnepal -->
+<!--html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form </title>
+  <link rel="stylesheet" href="{% static 'login_style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+<body>
+  <div class="wrapper">
+    <header>Login Form</header>
+    <form method="POST" action="login">
+    {% csrf_token %}
+      <div class="field email">
+        <div class="input-area">
+          <input type="text" name="username" placeholder="Username">
+          <i class="icon fas fa-envelope"></i>
+        </div>
+      </div>
+      <div class="field password">
+        <div class="input-area">
+          <input type="password" name="password"  placeholder="Password">
+          <i class="icon fas fa-lock"></i>
+        </div>
+
+      </div>
+      <div class="pass-txt">Forgot password?</div>
+      <input type="submit" value="Login">
+    </form>
+    <div class="sign-txt">Not yet member? <a href="register">Signup now</a></div>
+  </div>
+
+  <script src="{% static 'script.js' %}"></script>
+
+</body>
+</html-->

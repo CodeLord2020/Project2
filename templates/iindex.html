@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The Web News</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+	<!--[if lte IE 6]>
+	<link rel="stylesheet" type="text/css" href="{% static 'ie.css' %}" />
+	<![endif]-->
+	<style>
+		/* Responsive styles */
+		@media only screen and (max-width: 768px) {
+			#header {
+				text-align: center;
+			}
+			#header ul {
+				display: block;
+				margin: 0;
+				padding: 0;
+			}
+			#header li {
+				display: inline-block;
+				margin-right: 10px;
+			}
+			#content {
+				margin-left: 0;
+			}
+			#sidebar {
+				float: none;
+				width: auto;
+				margin: 0 auto;
+			}
+			.post {
+				margin-bottom: 20px;
+			}
+			.post h2 {
+				font-size: 24px;
+			}
+			.post p {
+				font-size: 14px;
+			}
+			.post .thumb {
+				float: none;
+				margin-bottom: 10px;
+			}
+			.postnav {
+				text-align: center;
+			}
+			.search input[type="text"] {
+				width: 100%;
+			}
+		}
+	</style>
+</head>
+<body>
+<!-- BEGIN wrapper -->
+<div id="wrapper">
+  <!-- BEGIN header -->
+  <div id="header">
+    <ul>
+      <li class="f"><a href="{%url 'index' %}">Home</a></li>
+      <li><a href="{%url 'about' %}">About Us</a></li>
+      <li><a href="{%url 'contact' %}">Contact Page</a></li>
+    </ul>
+    <div class="break"></div>
+    <div class="logo">
+      {% if user.is_authenticated %} 
+      <h1>Welcome {{user.username}}</a></h1>
+      {% else %}
+      <h1>Welcome</a></h1>
+      {% endif %}
+      
+    </div>
+    
+    <div class="break"></div>
+    <ol>
+      <li><a href="create_post">Create Post</a></li>
+      <li><a href="/category/Programming">Programming</a></li>
+      <li><a href="/category/Entertainment">Entertainment</a></li>
+      <li><a href="/category/Technology">Technology</a></li>
+      <li><a href="/category/Sport">Sport</a></li>
+      <li><a href="/category/Politics">Politics</a></li>
+      <li><a href="/category/Others">  Others</a></li>
+      {%  if user.is_authenticated %}
+      <li style="color: rgb(255, 255, 255);" class="active"><a href="logout">Logout</a></li>
+	  {% else %}
+	  <li style="color: rgb(248, 149, 149);" class="active"><a href="login">Login or Sign up</a></li>
+	  {% endif
