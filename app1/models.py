@@ -18,7 +18,8 @@ category_options =(
 )
 
 class Post(models.Model):
-    Author = models.CharField(max_length = 100, default = 'admin')
+    #Author = models.CharField(max_length = 100, default = 'admin')
+    Author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length = 100, null = False)
     category = models.CharField(max_length = 100, choices=category_options, default = 'Others')
     #body = models.CharField(max_length = 1000000, default = 'Blog main body')

@@ -1,6 +1,5 @@
 {% load static %}
 <!DOCTYPE html>
-<!-- Coding by CodingLab | www.codinglabweb.com-->
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
@@ -9,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'reg_style.css'  %}">
    </head>
 <body>
+  <a href="{% url 'index' %}" style="position: absolute; top: 10px; left: 10px; color: #fff; padding: 10px; background-color: #333; border-radius: 5px; text-decoration: none; font-weight: bold;">Home</a>
   <div class="wrapper">
     <h2>LOGIN</h2>
     <form method="POST" action="login">
@@ -27,7 +27,7 @@
         <h3>Don't have an account? <a href="register">Sign up now</a></h3>
       </div>
       <div class="text">
-        <h6 style="text-align: center;"><a style="color: rgb(25, 26, 26);"  href="forgot_password">Forgotten Password?</a></h6>
+        <h6 style="text-align: center;"><a style="color: rgb(106, 109, 109);"  href="forgot_password">Forgotten Password?</a></h6>
       </div>
     </form>
   </div>

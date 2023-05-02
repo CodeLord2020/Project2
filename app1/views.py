@@ -27,7 +27,7 @@ def index(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     
     posts = Post.objects.filter(
-        Q(Author__icontains=q) |
+        Q(Author__username__icontains=q) |
         Q(title__icontains=q) |
         Q(body__icontains=q)
     )
@@ -51,9 +51,9 @@ def forgot_password(request):
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             subject = 'Reset Password Request:'
             reset_link = request.build_absolute_uri('/') + f'reset_password/{uid}/{token}/'
-            message = render_to_string('reset_password.html', {'reset_link': reset_link})
+            #message = render_to_string('reset_password.html', {'reset_link': reset_link})
             #message = 'just to try some sample message'
-            #message = f'Click on the link to reset your password: {reset_link}'
+            message = f'Click on the link to reset your password: {reset_link}'
             email_from = settings.EMAIL_HOST_USER
             send_mail(subject, message, email_from, [email], fail_silently=False)
             messages.success(request, 'An email has been sent to reset your password')
@@ -72,14 +72,14 @@ def reset_password(request, uid, token):
                 if password == confirm_password:
                     user.set_password(password)
                     user.save()
-                    messages.success(request, 'Password reset successful')
+                    # messages.success(request, 'Password reset successful')
                     return redirect('login')
                 else:
                     messages.error(request, 'Passwords do not match')
             return render(request, 'reset_password.html')
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-    messages.error(request, 'Invalid link')
+    messages.error(request, 'Invalid or Expired link')
     return redirect('forgot_password')
 
 def register(request):
@@ -130,15 +130,18 @@ def logout(request):
 
 def postpage(request, pk):
    posts = Post.objects.get(id=pk)
-   return render(request, 'postpage.html', {'posts':posts})
+   user = request.user
+   context = {'user': user, 'posts':posts}
+   return render(request, 'postpage.html', context)
 
 @login_required(login_url='login')
 def create_post(request):
    form = PostForm()
+   current_user = request.user
    if request.method == 'POST':
         Post.objects.create(
 
-            Author = request.user,
+            Author = current_user,
             title = request.POST.get('title'),
             category=request.POST.get('category'),
             body = request.POST.get('blog-body'),
@@ -174,8 +177,8 @@ def create_post(request):
 @login_required(login_url='login')
 def updatePost(request, pk):
     post = Post.objects.get(id=pk)
-    if str(request.user) != post.Author:
-        return HttpResponse('Hello '+ str(request.user)+'. You are not allowed to edit ' + post.Author+ "'s post")
+    # if  request.user != post.Author:
+    #     return HttpResponse('Hello '+ str(request.user)+'. You are not allowed to edit ' + post.Author+ "'s post")
     
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
@@ -190,6 +193,17 @@ def updatePost(request, pk):
         form = PostForm(instance=post)
     context =  {'form': form, 'post': post}
     return render(request, 'updatePost.html', context)
+
+@login_required(login_url='login')
+def deletePost(request, pk):
+    post = Post.objects.get(id=pk)
+    #if request.method == 'POST' and request.POST.get("confirm") == "yes":
+    post.delete()
+        #messages.success(request, 'Post deleted successfully')
+    return redirect('index')
+    #context = {"post": post}
+    #return render(request, "postpage.html", context)
+
 
 
 def about(request):

@@ -9,6 +9,7 @@ urlpatterns = [
     path('postpage/<str:pk>', views.postpage, name = 'postpage'),
     path('create_post', views.create_post, name = 'create_post'),
     path('updatePost/<str:pk>', views.updatePost, name = 'updatePost'),
+    path('deletePost/<str:pk>', views.deletePost, name = 'deletePost'),
     path('category/<str:pk>', views.category, name = 'categorypage'),
     
     path('logout', views.logout, name = 'logout'),
@@ -18,7 +19,7 @@ urlpatterns = [
 
     
     path('forgot_password/', views.forgot_password, name='forgot_password'),
-    path('reset_password/<str:token>/', views.reset_password, name='reset_password'),
+    path('reset_password/<str:uid>/<str:token>/', views.reset_password, name='reset_password'),
 
 
 ]
