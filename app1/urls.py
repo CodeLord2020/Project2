@@ -6,7 +6,16 @@ urlpatterns = [
     path('index', views.index, name = 'index'),
     path('login', views.login, name = 'login'),
     path('register', views.register, name = 'register'),
+
     path('postpage/<str:pk>', views.postpage, name = 'postpage'),
+    path('posts/<int:pk>/preference/<int:userpreference>/', views.postpreference, name='postpreference'),
+
+    #path('post/<str:pk>/<str:userpreference>', views.postpreference, name='postpreference'),
+    # path('likePst/<str:pk>', views.like_post, name = 'like_post'),
+    # path('dislikePost/<str:pk>', views.dislike_post, name = 'dislike_post'),
+    # path('heartPost/<str:pk>', views.heart_post, name = 'heart_post'),
+
+
     path('create_post', views.create_post, name = 'create_post'),
     path('updatePost/<str:pk>', views.updatePost, name = 'updatePost'),
     path('deletePost/<str:pk>', views.deletePost, name = 'deletePost'),

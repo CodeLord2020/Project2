@@ -8,7 +8,7 @@ from .models import Post
 from .forms import PostForm
 from django.db.models import Q
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.paginator import Paginator
 
@@ -131,8 +131,121 @@ def logout(request):
 def postpage(request, pk):
    posts = Post.objects.get(id=pk)
    user = request.user
-   context = {'user': user, 'posts':posts}
+   context = {'user': user, 'posts':posts, 'one':1, 'two':2}
    return render(request, 'postpage.html', context)
+
+
+from .models import Preference
+@login_required
+def postpreference(request, pk, userpreference):
+        user = request.user
+        pk = pk
+        
+        if request.method == "POST":
+                posts = Post.objects.get(id=pk)
+
+                obj=''
+
+                valueobj=''
+
+                try:
+                        obj = Preference.objects.get(user= request.user, post = posts)
+
+                        valueobj= obj.value #value of userpreference
+
+
+                        valueobj= int(valueobj)
+
+                        userpreference = int(userpreference)
+                
+                        if valueobj != userpreference:
+                                obj.delete()
+
+
+                                upref= Preference()
+                                upref.user= request.user
+
+                                upref.post= posts
+
+                                upref.value= userpreference
+
+
+                                if userpreference == 1 and valueobj != 1:
+                                        posts.likes += 1
+                                        posts.dislikes -=1
+                                elif userpreference == 2 and valueobj != 2:
+                                        posts.dislikes += 1
+                                        posts.likes -= 1
+                                
+
+                                upref.save()
+
+                                posts.save()
+                        
+                        
+                                context= {'posts': posts, 'user':user,
+                                  'pk': pk}
+
+                                return redirect ('postpage', pk = pk)
+
+                        elif valueobj == userpreference:
+                                obj.delete()
+                        
+                                if userpreference == 1:
+                                        posts.likes -= 1
+                                elif userpreference == 2:
+                                        posts.dislikes -= 1
+
+                                posts.save()
+
+                                context= {'posts': posts, 'user':user,
+                                  'pk': pk}
+
+                                return redirect ('postpage', pk = pk)
+                                
+                        
+        
+                
+                except Preference.DoesNotExist:
+                        upref= Preference()
+
+                        upref.user= request.user
+
+                        upref.post= posts
+
+                        upref.value= userpreference
+
+                        userpreference= int(userpreference)
+
+                        if userpreference == 1:
+                                posts.likes += 1
+                        elif userpreference == 2:
+                                posts.dislikes +=1
+
+                        upref.save()
+
+                        posts.save()                            
+
+
+                        context= {'posts': posts,'user':user,
+                          'pk': pk}
+
+                        return redirect ('postpage', pk = pk)
+
+
+        else:
+                posts = Post.objects.get(id = pk)
+                context= {'posts': posts, 'user':user,
+                          'pk': pk}
+
+                return redirect ('postpage',pk= pk )
+
+
+
+
+
+
+
 
 @login_required(login_url='login')
 def create_post(request):

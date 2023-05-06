@@ -30,6 +30,9 @@
   <head>
     <title>Macsauce Expose</title>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-.../...">
+
+  
     <style>
       * {
         box-sizing: border-box;
@@ -80,6 +83,11 @@
         cursor: pointer;
       }
 
+      .custom-color {
+       color: rgb(224, 15, 15); /* set your desired color here */
+      }
+
+
       .post-body button:hover {
         background-color: #444;
       }
@@ -90,10 +98,6 @@
 
       .post-body .like {
         background-color: #4caf50;
-      }
-
-      .post-body .dislike {
-        background-color: #f44336;
       }
 
       .post-body .heart {
@@ -127,32 +131,81 @@
 
       #footer a:hover {
         color: #fff;
+
       }
+
+.reaction-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.btn btn-link {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+
+.count {
+  margin-left: 10px;
+  font-size: 1.2em;
+}
     </style>
 
   </head>
 
   <body>
-    
     <div class="container">
-      <a href="{% url 'index' %}" style="position: absolute; top: 10px; left: 10px; color: #fff; padding: 10px; background-color: #333; border-radius: 5px; text-decoration: none; font-weight: bold;">Home</a>
-     
-      <h2>{{posts.title}}</h2>
-       <span class="dateauthor">Posted on {{posts.time_created}} by {{posts.Author}}</span>
-
-      {% if user.is_authenticated and request.user == posts.Author %}
-      
-           <a href="{% url 'updatePost' posts.id %}" style="position: absolute; top: 10px; right: 10px; color: #fff; padding: 10px; background-color: #333; border-radius: 5px; text-decoration: none; font-weight: bold;">Update Post</a>
-           <a href="{% url 'deletePost' posts.id %}" onclick="return confirm('Are you sure you want to delete Post?')" style="position: absolute; top: 60px; right: 10px; color: #fff; padding: 10px; background-color: #333; border-radius: 5px; text-decoration: none; font-weight: bold;">Delete Post</a>
-
-       {% endif %}
-
-      <div class="post-body">
-        <p style="color: black;">{{posts.body|safe}}</p><br><br><br><br>
-        <button class="like" onclick="like()">&#x1F44D; <span id="like-count">{{posts.like_count}}</span></button>
-        <button class="dislike" onclick="dislike()">&#x1F44E; <span id="dislike-count">{{posts.dislike_count}}</span></button>
-        <button class="heart" onclick="heart()">&#x2764; <span id="heart-count">{{posts.heart_count}}</span></button>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <a href="{% url 'index' %}" style="color: rgb(207, 228, 149);" class="btn btn-primary mb-3"><i class="fas fa-home" style="color: rgb(207, 228, 149);  font-size: 400%;"></i>Home</a><br><br>
+        </div>
+        {% if user.is_authenticated and request.user == posts.Author %}
+        <div class="col-12 col-md-6 text-end">
+          <a href="{% url 'updatePost' posts.id %}" style="color:rgb(207, 228, 149); font-size: 80%;" class="btn btn-primary mb-3"><i class="fas fa-edit" style="color:rgb(207, 228, 149); font-size: 200%;"></i> Update Post</a>
+          <a href="{% url 'deletePost' posts.id %} " style="color: rgb(207, 228, 149); font-size: 80%;" onclick="return confirm('Are you sure you want to delete Post?')" class="btn btn-danger mb-3"><i class="fas fa-trash" style="color: rgb(185, 58, 58); font-size: 200%;"></i> Delete Post</a>
+        </div>
+        {% endif %}
       </div>
+    
+      <div class="row">
+        <div class="col-12">
+          <h2 style="color: #ffffff;">{{posts.title}}</h2>
+          <span class="dateauthor">Posted on {{posts.time_created}} by {{posts.Author}}</span>
+        </div>
+      </div>
+    </div>
+    
+
+    <div class="post-body">
+        <p style="color: black;">{{posts.body|safe}}</p><br><br><br><br>
+        {% if user.is_authenticated %}
+
+     <div class="reaction-buttons">
+        <form action="{% url 'postpreference' posts.id 1 %}" method="POST" id="likebutton">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link"><i class="far fa-thumbs-up"></i>
+        <span class="count">{{ posts.likes }}</span>
+  
+        </button>
+        </form>
+
+<!-- Dislike button -->
+       <form action="{% url 'postpreference' posts.id 2 %}" method="POST" id="dislikebutton">
+       {% csrf_token %}
+       <button type="submit" class="btn btn-link"><i class="far fa-thumbs-down"></i>
+       <span class="count">{{ posts.dislikes }}</span>
+       </button>
+
+</form>
+
+</div>
+
+{% endif %}
+
+
+</div>
 
       <footer id="footer">
         <section>
