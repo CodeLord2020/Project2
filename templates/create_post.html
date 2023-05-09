@@ -53,7 +53,8 @@
       }
 
       textarea {
-        height: 200px;
+    
+        height: 100px;
       }
 
       .btn {
@@ -138,7 +139,7 @@ select::-ms-expand {
           force_p_newlines: true,
           forced_root_block: false,
           toolbar: 'undo redo | bold italic underline | bullist numlist | link image',
-          autoresize_min_height: 200
+          autoresize_min_height:  '400px !important'
         });
      </script>
      
@@ -154,7 +155,7 @@ select::-ms-expand {
         <h3>Create Post</h3>
       </div>
 
-      <form class="form" action="" method="POST">
+      <form class="form" action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="form__group">
@@ -162,10 +163,7 @@ select::-ms-expand {
           {{form.title}}
         </div>
 
-        <!-- <div class="form__group">
-          <label for="room_description">Category</label>
-          {{form.category}}
-        </div> -->
+
         <div class="form__group">
           <label for="room_description">Category:</label>
           <div class="select-wrapper">
@@ -174,8 +172,12 @@ select::-ms-expand {
         </div>
         
         
+      <div class="mb-3">
+          <label for="post-image" class="form-label">Post Image</label>
+          <input class="form-control" type="file" id="post-image" name="post-image">
+      </div>
 
-        
+
         <div class="form__group">
           <label for="room_description">References:</label>
           <div class="select-wrapper">

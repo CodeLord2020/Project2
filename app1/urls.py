@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     path('', views.index, name = 'index'),
     path('index', views.index, name = 'index'),
@@ -19,7 +22,7 @@ urlpatterns = [
     path('create_post', views.create_post, name = 'create_post'),
     path('updatePost/<str:pk>', views.updatePost, name = 'updatePost'),
     path('deletePost/<str:pk>', views.deletePost, name = 'deletePost'),
-    path('category/<str:pk>', views.category, name = 'categorypage'),
+    path('category/<str:pk>', views.category, name = 'category'),
     
     path('logout', views.logout, name = 'logout'),
     path('about', views.about, name = 'about'),
@@ -32,3 +35,5 @@ urlpatterns = [
 
 
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

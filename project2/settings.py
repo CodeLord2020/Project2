@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-lytf0n7k&jdej9fahwdt^u774dl7m^d0pxy8)mp)8#lso5ie$x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["192.168.137.1", '196.220.133.194', "127.0.0.1" ,"localhost", '0.0.0.0']
 
 
 # Application definition
@@ -159,12 +159,14 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 import os
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'brasheed240@gmail.com'
 EMAIL_HOST_PASSWORD = 'bkwltqqxbnildwdt'
-#os.environ.get('EMAIL_HOST_PASSWORD')
-#'
 

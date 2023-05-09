@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-
+import os
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -7,6 +7,10 @@ from django.contrib.auth import authenticate, login
 from .models import Post
 from .forms import PostForm
 from django.db.models import Q
+from django.core.files.storage import FileSystemStorage
+
+from PIL import Image
+
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
@@ -57,6 +61,7 @@ def forgot_password(request):
             email_from = settings.EMAIL_HOST_USER
             send_mail(subject, message, email_from, [email], fail_silently=False)
             messages.success(request, 'An email has been sent to reset your password')
+            return redirect ('login')
         else:
             messages.error(request, 'No user found with that email address')
     return render(request, 'forgot_password.html')
@@ -117,7 +122,7 @@ def login(request):
          if user is not None:
             auth.login(request, user)
             return redirect('index')
-            #return render(request, 'index.html')
+            #return render(request, 'index.html')l
          else:
             messages.info(request, 'Invalid Credentials')
             return redirect('login')
@@ -244,61 +249,57 @@ def postpreference(request, pk, userpreference):
 
 
 
-
-
-
 @login_required(login_url='login')
 def create_post(request):
-   form = PostForm()
-   current_user = request.user
-   if request.method == 'POST':
-        Post.objects.create(
-
-            Author = current_user,
-            title = request.POST.get('title'),
-            category=request.POST.get('category'),
-            body = request.POST.get('blog-body'),
-            references=request.POST.get('references'),
-
+    form = PostForm()
+    current_user = request.user
+    if request.method == 'POST':
+        image_file = request.FILES.get('post-image')
+        if image_file:
+            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'post_images'))
+            filename = fs.save(image_file.name, image_file)
+            image_path = 'post_images/' + filename
+        else:
+            image_path = ''
+        post = Post(                
+             Author=current_user,
+             title=request.POST.get('title'),
+             category=request.POST.get('category'),
+             body=request.POST.get('blog-body'),
+             references=request.POST.get('references'),
+             image=image_path
         )
-        blog_body = request.POST.get('blog-body')
+        post.save()
+        
         return redirect('index')
-   context = {'form': form, 'blog_body': 'blog_body'}
-  #if statement here for user authentification
-   return render(request, 'create_post.html', context)
 
-# @login_required(login_url='login')
-# def updatePost(request, pk):
-#     post = Post.objects.get(id=pk)
-#     if str(request.user) != post.Author:
-#         return HttpResponse('Hello '+ str(request.user)+'. You are not allowed to edit ' + post.Author+ "'s post")
-    
-#     if request.method == 'POST':
-#         form = PostForm(request.POST, instance=post)
-#         if form.is_valid():
-#             post.title =  form.cleaned_data['title']
-#             post.category =  form.cleaned_data['category']
-#             post.references =  form.cleaned_data['references']
-#             post.body =  form.cleaned_data['blog-body']    
-#             form.save()
+    context = {'form': form, 'blog_body': 'blog_body'}
+    return render(request, 'create_post.html', context)
 
-#             return redirect('postpage', pk = post.id)
-#     else:
-#         form = PostForm(instance=post)
-#     return render(request, 'updatePost.html', {'form': form})
 
 @login_required(login_url='login')
 def updatePost(request, pk):
     post = Post.objects.get(id=pk)
-    # if  request.user != post.Author:
-    #     return HttpResponse('Hello '+ str(request.user)+'. You are not allowed to edit ' + post.Author+ "'s post")
-    
     if request.method == 'POST':
+        image_file = request.FILES.get('post-image')
+        if image_file:
+            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'post_images'))
+            filename = fs.save(image_file.name, image_file)
+            image_path = 'post_images/' + filename
+            if post.image:
+                 old_image_path = os.path.join(settings.MEDIA_ROOT, post.image.name)
+                 if os.path.exists(old_image_path):
+                      os.remove(old_image_path)
+        else:
+            image_path = post.image
+
         form = PostForm(request.POST, instance=post)
         post.title =  request.POST.get('title')
         post.category =  request.POST.get('category')
         post.references =  request.POST.get('references')
         post.body =  request.POST.get('blog-body') 
+        post.image = image_path
+
         post.save()   
 
         return redirect('postpage', pk=post.id)
@@ -310,9 +311,7 @@ def updatePost(request, pk):
 @login_required(login_url='login')
 def deletePost(request, pk):
     post = Post.objects.get(id=pk)
-    #if request.method == 'POST' and request.POST.get("confirm") == "yes":
     post.delete()
-        #messages.success(request, 'Post deleted successfully')
     return redirect('index')
     #context = {"post": post}
     #return render(request, "postpage.html", context)
@@ -332,5 +331,10 @@ def page(request):
    return render(request, 'page.html')
 
 def category(request, pk):
-   posts = Post.objects.filter(category = pk)
-   return render(request, 'index.html', {'posts':posts})
+   posts = Post.objects.filter(category = pk).order_by('-time_created')
+   paginator = Paginator(posts, 8) 
+
+   page_number = request.GET.get('page', 1)
+   page = paginator.get_page(page_number)
+   context = {'posts': posts, 'page': page, 'page_range': paginator.page_range}
+   return render(request, 'index.html', context)

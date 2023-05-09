@@ -11,27 +11,30 @@
 	</head>
 	
 	<body class="is-preload">
+		<header id="header">
+						
+			<a href="{% url 'index' %}" class="logo">Home</a>
+			
+		</header>
 
 		<!-- Wrapper -->
 			<div id="wrapper" class="fade-in">
 
 				<!-- Intro -->
 					<div id="intro">
-						<h1>Hi,<br />
+						<h1>Hi,{% if user.is_authenticated %}{{user.username}}{% endif %}<br />
 						Welcome</h1>
 						<p>This is Macsauce Expose, A free and interesting blog site <a href="https://twitter.com/babs_rasheed">@babs_rasheed</a><br /></p>
-						<ul class="actions">
+						<!-- <ul class="actions">
 							<li><a href="{%url 'index' %}" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
-						</ul>
+						</ul> -->
 					</div>
 
 				<!-- Header -->
 					<header id="header">
-						{% if user.is_authenticated %} 
-						<a href="index.html" class="logo">Welcome {{user.username}}</a>
-						{% else %}
-						<a href="index.html" class="logo">Welcome</a>
-						{% endif %}
+						
+						<a href="{% url 'index' %}" class="logo">Home</a>
+						
 					</header>
 
 				<!-- Nav -->
@@ -50,39 +53,19 @@
 							<li style="color: rgb(248, 149, 149);" class="active"><a href="login">Login or Sign up</a></li>
 							{% endif %}
 						</ul>
-						<!-- <ul class="icons">
-							<li><a href="https://twitter.com/babs_rasheed" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-							<li><a href="https://www.linkedin.com/in/rasheed-babatunde-50133921a/" class="icon brands fa-linkedin"><span class="label">Instagram</span></a></li>
-							<li><a href="https://github.com/CodeLord2020" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-						</ul> -->
+						
 					</nav>
 
 				<!-- Main -->
 					<div id="main">
 
-						<!-- Featured Post -->
-						<!-- {% for post in posts %}
-						   {% if forloop.last %}
-						   <article class="post featured">
-								<header class="major">
-									<span class="dateauthor">Posted on {{post.time_created}} by <b>{{post.Author}}</b></span>
-									<h2><a href="/postpage/{{post.id}}">{{post.title}}</a></h2>
-									<p>{{post.body|safe|truncatewords:15}}</p>
-								</header>
-								<a href="/postpage/{{post.id}}" class="image main"><img src="{% static 'images/_thumb1.jpg' %}" alt="" /></a>
-								<ul class="actions special">
-									<li><a href="/postpage/{{post.id}}" class="button large">Full Story</a></li>
-								</ul>
-							</article>
-							{% endif %}
-						{% endfor %} --><!-- {% if not forloop.first %} -->
-						<!-- Posts --><!-- {% endif %} -->
 						
 						    
 							<section class="posts">
 						
 							{% for post in page  %}
+
+							
 								<article>
 									<header>
 										<span class="date">Posted on {{post.time_created}}</span>
@@ -90,9 +73,22 @@
 										<span class="date">Posted by <b>{{post.Author}}</b></span>
 										<h2><a href="/postpage/{{post.id}}">{{post.title}}</a></h2>
 									</header>
-									<a href="/postpage/{{post.id}}" class="image fit"><img src="{% static 'images/_thumb1.jpg' %}" alt="" /></a>
-									<!-- <p>{{post.body|safe|truncatewords:15}}</p> -->
-									<ul class="actions special">
+									{% if post.image %}
+									<a href="/postpage/{{post.id}}" class="image fit"><img src="{{post.image.url}}" alt="{% static 'images/_thumb1.jpg' %}" /></a>
+									{% else %}
+									<a href="/postpage/{{post.id}}" class="image fit"><img src="{% static 'images/_thumb2.jpg' %}" alt="" /></a>
+									{% endif %}
+									<style>
+									img	{
+										min-height: 300px;
+										min-width: 400px;
+										max-width: 500px;
+										max-height: 300px;
+										width: auto;
+										height: auto;
+									  }
+									</style> 
+								<ul class="actions special">
 										<li><a href="/postpage/{{post.id}}" class="button">Full Story</a></li>
 									</ul>
 								</article>
@@ -121,17 +117,7 @@
 									{% endif %}
 								</div>
 
-								<!-- <div class="pagination">
-									<a href="#" class="previous">Prev</a>
-									<a href="#" class="page active">1</a>
-									<a href="#" class="page">2</a>
-									<a href="#" class="page">3</a>
-									<span class="extra">&hellip;</span>
-									<a href="#" class="page">8</a>
-									<a href="#" class="page">9</a>
-									<a href="#" class="page">10</a>
-									<a href="#" class="next">Next</a>
-								</div> -->
+								
 							</footer>
 
 					</div>
@@ -150,8 +136,9 @@
 								<h3>Social</h3>
 								<ul class="icons alt">
 									<li><a href="https://twitter.com/babs_rasheed" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="https://github.com/CodeLord2020" class="icon brands alt fa-instagram"><span class="label">GitHub</span></a></li>
+									<li><a href="https://www.facebook.com/adebayo.rasheed.752" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="https://github.com/CodeLord2020" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="https://www.instagram.com/macsauce419/" class="icon brands alt fa-instagram"><span class="label">GitHub</span></a></li>
 								</ul>
 							</section>
 						</section>

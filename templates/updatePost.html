@@ -150,7 +150,7 @@ select::-ms-expand {
         <h3>Update Post</h3>
       </div>
 
-      <form class="form" action="{% url 'updatePost' post.id %}" method="POST">
+      <form class="form" action="{% url 'updatePost' post.id %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="form__group">
@@ -158,17 +158,27 @@ select::-ms-expand {
           {{form.title}}
         </div>
 
-        <!-- <div class="form__group">
-          <label for="room_description">Category</label>
-          {{form.category}}
-        </div> -->
-
         <div class="form__group">
           <label for="room_description">Category:</label>
           <div class="select-wrapper">
             {{ form.category }}
           </div>
+          <br>
         </div>
+
+       
+
+        <div class="mb-3">
+          <label for="post-image" class="form-label">Post Image</label>
+          {% if post.image %}
+              <img src="{{ post.image.url }}" width="200px" height="200px">
+              <input class="form-control" type="file" id="post-image" name="post-image">
+          {% else %}
+              <input class="form-control" type="file" id="post-image" name="post-image">
+          {% endif %}
+      
+          <br>
+      </div>
 
         
         <div class="form__group">
@@ -182,8 +192,6 @@ select::-ms-expand {
           <label form="blog-body">Body:</label>
          <textarea id="blog-body" name="blog-body">{{ post.body|safe }}</textarea><br><br>
         </div>
-
-       
 
         <div class="form__action">
           <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>

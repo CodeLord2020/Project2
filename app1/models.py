@@ -18,25 +18,16 @@ category_options =(
 )
 
 class Post(models.Model):
-    #Author = models.CharField(max_length = 100, default = 'admin')
     Author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length = 100, null = False)
     category = models.CharField(max_length = 100, choices=category_options, default = 'Others')
-    #body = models.CharField(max_length = 1000000, default = 'Blog main body')
     body = HTMLField()
-
     likes = models.IntegerField(default = 0 )
     dislikes = models.IntegerField(default = 0 )
-
-    # like = models.BooleanField(default=False)
-    # dislike = models.BooleanField(default=False)
-    # heart = models.BooleanField(default=False)
-    #likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
-    #hearts = models.ManyToManyField(User, related_name='post_hearts', blank=True)
-    #dislikes = models.ManyToManyField(User, related_name='post_dislikes', blank=True)
-
     references = models.CharField(max_length = 10000, null = True)
     time_created = models.DateTimeField(default = datetime.now, blank = True)
+    image = models.ImageField(upload_to='post_images/', blank=True, null=True)
+    
 
     def __str__(self):
         return self.title

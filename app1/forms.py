@@ -11,8 +11,10 @@ class TinyMCEWidget(TinyMCE):
 class PostForm(ModelForm):
     body = forms.CharField(
         widget=TinyMCEWidget(attrs=
-                       {'cols': 30, 'rows': 10}))
+                       {'cols': 30, 'rows': 12}))
     class Meta:
         model = Post 
         fields = '__all__'
         exclude = ['Author',  'time_created']
+
+    image = forms.ImageField(required=False, label='Post Image')
